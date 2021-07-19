@@ -12,19 +12,6 @@ const createOptionItem = (item, index) => (
   </option>
 )
 
-const handleChange = evt => {
-  const target = evt.target
-  const value = target.type === 'checkbox' ? target.checked : target.value
-  const name = target.name
-
-  this.setState(
-    {
-      [name]: value // return this and pass it to filterRooms
-    },
-    this.filterRooms // callback function that will be executed once setState is completed
-  )
-}
-
 const RoomsFilter = () => {
   // react hooks
   const context = useContext(RoomContext)

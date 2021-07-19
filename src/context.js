@@ -3,43 +3,6 @@ import items from './data'
 import Client from './Contentful'
 
 const RoomContext = React.createContext()
-
-const formatData = items => {
-  let tempItems = items.map(item => {
-    let id = item.sys.id
-    let images = item.fields.images.map(image => image.fields.file.url)
-
-    let room = { ...item.fields, images, id }
-    return room
-  })
-  return tempItems
-}
-
-const getData = async () => {
-  try {
-    const response = await Client.getEntries({
-      content_type: 'beachResortRoom'
-    })
-
-    return formatData(response.items)
-  } catch (error) {
-    console.log('failed to get data from db. Error:', error)
-  }
-}
-
-const RomProvider = props => {
-  const [rooms, setRooms] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const _rooms = getData()
-    setRooms(_rooms)
-    setIsLoading(!isLoading)
-  }, [rooms, isLoading])
-
-  return <RoomContext.Provider value={{ rooms }}>{props.children}</RoomContext.Provider>
-}
-
 export default class RoomProvider extends Component {
   state = {
     rooms: [],
@@ -121,7 +84,7 @@ export default class RoomProvider extends Component {
         maxSize,
         minSize
       })
-      console.log('this.state', this.state)
+      // console.log('this.state', this.state)
     } catch (error) {
       console.log(error)
     }
