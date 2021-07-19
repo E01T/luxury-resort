@@ -1,8 +1,44 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import items from './data'
 import Client from './Contentful'
 
 const RoomContext = React.createContext()
+
+const formatData = items => {
+  let tempItems = items.map(item => {
+    let id = item.sys.id
+    let images = item.fields.images.map(image => image.fields.file.url)
+
+    let room = { ...item.fields, images, id }
+    return room
+  })
+  return tempItems
+}
+
+const getData = async () => {
+  try {
+    const response = await Client.getEntries({
+      content_type: 'beachResortRoom'
+    })
+
+    return formatData(response.items)
+  } catch (error) {
+    console.log('failed to get data from db. Error:', error)
+  }
+}
+
+const RomProvider = props => {
+  const [rooms, setRooms] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const _rooms = getData()
+    setRooms(_rooms)
+    setIsLoading(!isLoading)
+  }, [rooms, isLoading])
+
+  return <RoomContext.Provider value={{ rooms }}>{props.children}</RoomContext.Provider>
+}
 
 export default class RoomProvider extends Component {
   state = {
@@ -28,8 +64,6 @@ export default class RoomProvider extends Component {
 
   getPricesFrom = this.map(item => item.price)
   getSizesFrom = this.map(item => item.size)
-  // getPrices = rooms => rooms.map(item => item.price)
-  // getSizes = rooms => rooms.map(item => item.size)
 
   compareObjByName = (objA, objB) => {
     if (objA.name < objB.name) {
@@ -43,7 +77,7 @@ export default class RoomProvider extends Component {
 
   sortByName = this.sort(this.compareObjByName)
 
-  // TODO fix it
+  // TODO improve it
   formatData(items) {
     let tempItems = items.map(item => {
       let id = item.sys.id
@@ -123,14 +157,14 @@ export default class RoomProvider extends Component {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
     const name = target.name
-    console.log('handleChange in context.js', name, value)
-    console.log('this.state.rooms', this.state.rooms)
-    console.log('this.state.sortedRooms', this.state.sortedRooms)
+    // console.log('handleChange in context.js', name, value)
+    // console.log('this.state.rooms', this.state.rooms)
+    // console.log('this.state.sortedRooms', this.state.sortedRooms)
     this.setState(
       {
         [name]: value
       },
-      this.filterRooms
+      this.filterRooms // callback function that will be executed once setState is completed
     )
   }
 
@@ -138,7 +172,7 @@ export default class RoomProvider extends Component {
     let { rooms, type, capacity, price, size, breakfast, pets } = this.state
 
     let tempRooms = [...rooms]
-    console.log('1) tempRooms', tempRooms)
+    // console.log('1) tempRooms', tempRooms)
     // transform values
     // get capacity
     capacity = parseInt(capacity)
@@ -146,32 +180,32 @@ export default class RoomProvider extends Component {
     // filter by type
     if (type !== 'all') {
       tempRooms = tempRooms.filter(room => room.type === type)
-      console.log('2) tempRooms', tempRooms)
+      // console.log('2) tempRooms', tempRooms)
     }
     // filter by capacity
     if (capacity !== 1) {
       tempRooms = tempRooms.filter(room => room.capacity >= capacity)
-      console.log('3) tempRooms', tempRooms)
+      // console.log('3) tempRooms', tempRooms)
     }
     // filter by price
     tempRooms = tempRooms.filter(room => room.price <= price)
-    console.log('4) tempRooms', tempRooms)
+    // console.log('4) tempRooms', tempRooms)
 
     //filter by size
     tempRooms = tempRooms.filter(room => room.size <= size)
-    console.log('5) tempRooms', tempRooms)
+    // console.log('5) tempRooms', tempRooms)
 
     //filter by breakfast
     if (breakfast) {
       tempRooms = tempRooms.filter(room => room.breakfast === true)
-      console.log('6) tempRooms', tempRooms)
+      // console.log('6) tempRooms', tempRooms)
     }
     //filter by pets
     if (pets) {
       tempRooms = tempRooms.filter(room => room.pets === true)
-      console.log('7) tempRooms', tempRooms)
+      // console.log('7) tempRooms', tempRooms)
     }
-    console.log('8) tempRooms', tempRooms)
+    // console.log('8) tempRooms', tempRooms)
 
     this.setState({
       sortedRooms: tempRooms
