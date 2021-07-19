@@ -1,13 +1,35 @@
 import { useContext } from 'react'
 import { RoomContext } from '../context'
 import Title from './Title'
+
+const map = fn => array => array.map(fn)
 // get all unique values
 const getUnique = items => value => [...new Set(items.map(item => item[value]))]
 
-const RoomsFilter = ({ rooms }) => {
+const createOptionItem = (item, index) => (
+  <option key={index} value={item}>
+    {item}
+  </option>
+)
+
+const handleChange = evt => {
+  const target = evt.target
+  const value = target.type === 'checkbox' ? target.checked : target.value
+  const name = target.name
+
+  this.setState(
+    {
+      [name]: value // return this and pass it to filterRooms
+    },
+    this.filterRooms // callback function that will be executed once setState is completed
+  )
+}
+
+const RoomsFilter = () => {
   // react hooks
   const context = useContext(RoomContext)
   const {
+    rooms,
     handleChange,
     type,
     capacity,
@@ -24,25 +46,16 @@ const RoomsFilter = ({ rooms }) => {
   // bind rooms to getUnique fn
   const getRoomsBy = getUnique(rooms)
 
-  // get unique types
-  let types = getRoomsBy('type').sort()
+  const createOptionList = map(createOptionItem)
 
-  // add all
-  types = ['all', ...types]
-  // map to jsx
-  types = types.map((item, index) => (
-    <option key={index} value={item}>
-      {item}
-    </option>
-  ))
-  // get unique capacity
-  let people = getRoomsBy('capacity').sort((a, b) => a - b)
+  const fromTypes = ['all', ...getRoomsBy('type').sort()]
+  // get unique types, add 'all' in front of the array and create jsx options list from it
+  const types = createOptionList(fromTypes)
 
-  people = people.map((item, index) => (
-    <option key={index} value={item}>
-      {item}
-    </option>
-  ))
+  const fromCapacity = getRoomsBy('capacity').sort((a, b) => a - b)
+  // get unique capacity -> [] and create jsx options list from it
+  const people = createOptionList(fromCapacity)
+
   return (
     <section className='filter-container'>
       <Title title='search rooms' />

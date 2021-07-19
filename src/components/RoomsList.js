@@ -1,6 +1,11 @@
 import Room from './Room'
+import { useContext } from 'react'
+import { RoomContext } from '../context'
 
-const RoomsList = ({ rooms }) => {
+const RoomsList = () => {
+  // get sortedRooms as rooms
+  const { sortedRooms: rooms } = useContext(RoomContext)
+
   if (rooms.length === 0) {
     return (
       <div className='empty-search'>

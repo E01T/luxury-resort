@@ -4,14 +4,14 @@ import RoomsFilter from './RoomsFilter'
 import RoomsList from './RoomsList'
 
 function RoomContainer({ context }) {
-  const { loading, sortedRooms, rooms } = context
+  const { loading } = context
   if (loading) {
     return <Loading />
   }
   return (
     <>
-      <RoomsFilter rooms={rooms} />
-      <RoomsList rooms={sortedRooms} />
+      <RoomsFilter />
+      <RoomsList />
     </>
   )
 }
