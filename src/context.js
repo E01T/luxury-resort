@@ -15,6 +15,21 @@ const formatData = items =>
     id: item.sys.id
   }))(items)
 
+////////////////////////////////////////
+const sort = fn => array => array.sort(fn)
+
+const compareObjByName = (objA, objB) => {
+  if (objA.name < objB.name) {
+    return -1
+  }
+  if (objA.name > objB.name) {
+    return 1
+  }
+  return 0
+}
+
+const sortByName = sort(compareObjByName)
+
 const RoomProvider = props => {
   const [rooms, setRooms] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -28,7 +43,7 @@ const RoomProvider = props => {
           content_type: 'beachResortRoom'
         })
 
-        setRooms(formatData(response.items))
+        setRooms(sortByName(formatData(response.items)))
         setIsLoading(isLoading => !isLoading)
       } catch (error) {
         console.log('failed to get data from db. Error:', error)
