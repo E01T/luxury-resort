@@ -4,16 +4,24 @@ import { RoomContext } from '../context'
 import Room from './Room'
 import Loading from './Loading'
 
-const FeaturedRooms = props => {
-  const { loading, featuredRooms } = useContext(RoomContext)
-  const rooms = featuredRooms.map(room => {
-    return <Room key={room.id} room={room} />
-  })
+const map = fn => array => array.map(fn)
+const filter = fn => array => array.filter(fn)
+
+const isRoomFeatured = room => room.featured === true
+const getFeaturedRooms = filter(isRoomFeatured)
+
+const FeaturedRooms = () => {
+  const { loading, rooms } = useContext(RoomContext)
+  const featuredRooms = getFeaturedRooms(rooms)
+
+  const featured_rooms = map(room => <Room key={room.id} room={room} />)(featuredRooms)
 
   return (
     <section className='featured-rooms'>
       <Title title='featured rooms' />
-      <div className='featured-rooms-center'>{loading ? <Loading /> : rooms}</div>
+      <div className='featured-rooms-center'>
+        {loading ? <Loading /> : featured_rooms}
+      </div>
     </section>
   )
 }

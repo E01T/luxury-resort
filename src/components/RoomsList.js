@@ -1,10 +1,11 @@
 import Room from './Room'
-import { useContext } from 'react'
-import { RoomContext } from '../context'
+// import { useContext } from 'react'
+// import { RoomContext } from '../context'
 
-const RoomsList = () => {
+const RoomsList = ({ filteredRooms: rooms }) => {
   // get sortedRooms as rooms
-  const { sortedRooms: rooms } = useContext(RoomContext)
+  // const { rooms } = useContext(RoomContext)
+  // console.log('RoomList', rooms)
 
   if (rooms.length === 0) {
     return (
