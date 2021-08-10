@@ -1,9 +1,10 @@
+import { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import defaultImg from '../images/room-1.jpeg'
-import PropTypes from 'prop-types'
 import { memo } from 'react'
+import { room_T } from '../types'
 
-const Room = memo(({ room }) => {
+const Room: FunctionComponent<{room: room_T}> = memo(({ room }) => {
   const { name, slug, images, price } = room
 
   return (
@@ -23,12 +24,4 @@ const Room = memo(({ room }) => {
   )
 })
 
-Room.propTypes = {
-  room: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    slug: PropTypes.string.isRequired,
-    images: PropTypes.arrayOf(PropTypes.string).isRequired,
-    price: PropTypes.number.isRequired
-  })
-}
 export default Room

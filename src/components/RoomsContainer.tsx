@@ -1,17 +1,15 @@
 import { withRoomConsumer } from '../context'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FunctionComponent } from 'react'
 import Loading from './Loading'
 import RoomsFilter from './RoomsFilter'
 import RoomsList from './RoomsList'
+import { context_T } from '../types'
 
-function RoomContainer({ context }) {
+const RoomContainer: FunctionComponent<{ context: context_T }> = ({ context }) => {
   const { rooms, isLoading } = context
-  const [filteredRooms, setFilteredRooms] = useState([])
+  const [filteredRooms, setFilteredRooms] = useState(rooms)
 
   useEffect(() => setFilteredRooms(rooms), [rooms])
-
-  // console.log('rooms', rooms)
-  // console.log('filteredRooms', filteredRooms)
 
   if (isLoading) {
     return <Loading />

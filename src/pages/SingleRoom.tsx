@@ -1,16 +1,27 @@
-import { useContext } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import defaultBcg from '../images/room-1.jpeg'
 import Banner from '../components/Banner'
 import { Link } from 'react-router-dom'
 import { RoomContext } from '../context'
 import StyledHero from '../components/StyledHero'
+import { rooms_T } from '../types'
+import { find, map } from '../utils'
 
-const getRoom = rooms => slug => rooms.find(room => room.slug === slug)
+const getRoom = (rooms: rooms_T) => (slug: string) =>
+  find(room => room.slug === slug)(rooms)
 
-const SingleRoom = props => {
+// nested object type
+type props_type = {
+  match: {
+    params: { slug: string }
+  }
+}
+
+const SingleRoom: FunctionComponent<props_type> = ({ match: { params: { slug } } }) => {
   const { rooms } = useContext(RoomContext)
-  console.log('rooms -> ', rooms)
-  const slug = props.match.params.slug
+
+  // console.log('rooms -> ', rooms)
+  // const slug = props.match.params.slug
 
   const room = getRoom(rooms)(slug)
 
@@ -40,9 +51,9 @@ const SingleRoom = props => {
         </StyledHero>
         <section className='single-room'>
           <div className='single-room-images'>
-            {defaultImages.map((item, index) => (
+            {map((item, index) => (
               <img key={index} src={item} alt={name} />
-            ))}
+            ))(defaultImages)}
           </div>
           <div className='single-room-info'>
             <article className='desc'>
@@ -64,9 +75,9 @@ const SingleRoom = props => {
         <section className='room-extras'>
           <h6>extras </h6>
           <ul className='extras'>
-            {extras.map((item, index) => (
+            {map((item, index) => (
               <li key={index}>- {item}</li>
-            ))}
+            ))(extras)}
           </ul>
         </section>
       </>

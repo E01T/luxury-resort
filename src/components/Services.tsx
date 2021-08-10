@@ -1,7 +1,16 @@
+import { FunctionComponent } from 'react'
 import { FaCocktail, FaHiking, FaShuttleVan, FaBeer } from 'react-icons/fa'
 import Title from './Title'
 
-const services = [
+type service_type = {
+  icon: JSX.Element,
+  title: string,
+  info: string
+}
+
+type services_type = service_type []
+
+const services: services_type = [
   {
     icon: <FaCocktail />,
     title: 'Free Cocktails',
@@ -24,7 +33,7 @@ const services = [
   }
 ]
 
-const Services = () => {
+const Services: FunctionComponent = (): JSX.Element => {
   return (
     <section className='services'>
       <Title title='services' />

@@ -1,10 +1,11 @@
+import { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero'
 import Banner from '../components/Banner'
 import Services from '../components/Services'
 import FeaturedRooms from '../components/FeaturedRooms'
 
-const Home = () => {
+const Home: FunctionComponent = (): JSX.Element => {
   return (
     <>
       <Hero>

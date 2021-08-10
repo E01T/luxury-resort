@@ -1,3 +1,5 @@
+import './wdyr';
+ 
 import reportWebVitals from './reportWebVitals';
 
 import ReactDOM from "react-dom";

@@ -1,23 +1,23 @@
+import {FunctionComponent} from 'react'
+import { rooms_T } from '../types'
 import Room from './Room'
-// import { useContext } from 'react'
-// import { RoomContext } from '../context'
 
-const RoomsList = ({ filteredRooms: rooms }) => {
-  // get sortedRooms as rooms
-  // const { rooms } = useContext(RoomContext)
-  // console.log('RoomList', rooms)
+let count = 0
 
-  if (rooms.length === 0) {
+const RoomsList: FunctionComponent<{filteredRooms: rooms_T}> = ({ filteredRooms }): JSX.Element => {
+  if (filteredRooms.length === 0) {
     return (
       <div className='empty-search'>
         <h3>unfortunately no rooms matched your search parameters</h3>
       </div>
     )
   }
+  console.log('RoomsList count', count++);
+   
   return (
     <section className='roomslist'>
       <div className='roomslist-center'>
-        {rooms.map(item => {
+        {filteredRooms.map(item => {
           return <Room key={item.id} room={item} />
         })}
       </div>

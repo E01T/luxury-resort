@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaAlignRight } from 'react-icons/fa'
 import logo from '../images/logo.svg'
+import { FunctionComponent } from 'react'
 
-const Navbar = () => {
+const Navbar: FunctionComponent = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleToggle = () => {
